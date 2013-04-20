@@ -6,6 +6,7 @@ $bashrc = "/home/vagrant/.bashrc"
 $venv_base = "$venv_home/$venv_name"
 $venv_home = "/opt/envs"
 $venv_name = "smartclip"
+$wsgi_script = "/etc/puppet/files/smartclip_wsgi.py"
 
 class { "apache2":
   apache_port => $apache_port
