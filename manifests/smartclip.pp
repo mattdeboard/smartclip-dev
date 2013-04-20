@@ -1,10 +1,15 @@
-include apache2
 include postgresql
 
+$apache_port = "8001"
 $apps_dir = "/opt/apps"
 $bashrc = "/home/vagrant/.bashrc"
+$venv_base = "$venv_home/$venv_name"
 $venv_home = "/opt/envs"
 $venv_name = "smartclip"
+
+class { "apache2":
+  apache_port => $apache_port
+}
 
 if ! defined(Package['git']) {
   package { 'git': ensure => installed, }
@@ -38,3 +43,14 @@ file { $venv_home:
   group => 'vagrant',
   mode => 0644
 }
+
+file { '/etc/apache2/conf.d/smartclip.conf':
+  ensure => present,
+  owner => root,
+  group => root,
+  mode => 0644,
+  content => template('/tmp/vagrant-puppet/manifests/smartclip.conf.erb'),
+  require => Package['apache2'],
+  notify => Service['apache2']
+}
+

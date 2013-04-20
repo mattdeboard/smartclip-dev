@@ -1,0 +1,13 @@
+WSGIPythonHome <%= @venv_home %>/<%= @venv_name %>
+
+<VirtualHost *:<%= @apache_port %>>
+  Alias /media/admin <%= @venv_home %>/<%= @venv_name %>/lib/python2.7/site-packages/django/contrib/admin/static/admin
+  WSGIScriptAlias / <%= @apps_dir %>/smartclip/smartclip/wsgi.py
+  WSGIDaemonProcess smartclip processes=1 python-path=<%= @apps_dir %>/smartclip
+  WSGIProcessGroup smartclip
+  
+  <Directory <%= @venv_home %>/<%= @venv_name %>/lib/python2.7/site-packages/django/contrib/admin/static/admin>
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
