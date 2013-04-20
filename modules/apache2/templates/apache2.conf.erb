@@ -1,0 +1,66 @@
+LockFile ${APACHE_LOCK_DIR}/accept.lock
+Listen *:<%= apache_port %>
+PidFile ${APACHE_PID_FILE}
+Timeout 300
+KeepAlive On
+MaxKeepAliveRequests 100
+KeepAliveTimeout 5
+User ${APACHE_RUN_USER}
+AccessFileName .htaccess
+EnableSendFile off
+
+#
+# The following lines prevent .htaccess and .htpasswd files from being 
+# viewed by Web clients. 
+#
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy all
+</Files>
+
+DefaultType None
+# ErrorLog: The location of the error log file.
+# If you do not specify an ErrorLog directive within a <VirtualHost>
+# container, error messages relating to that virtual host will be
+# logged here.  If you *do* define an error logfile for a <VirtualHost>
+# container, that host's errors will be logged there and not here.
+#
+ErrorLog ${APACHE_LOG_DIR}/error.log
+
+#
+# LogLevel: Control the number of messages logged to the error_log.
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+#
+LogLevel warn
+
+# Include module configuration:
+Include mods-enabled/*.load
+Include mods-enabled/*.conf
+
+# Include all the user configurations:
+#Include httpd.conf
+
+# Include ports listing
+#Include ports.conf
+
+#
+# The following directives define some format nicknames for use with
+# a CustomLog directive (see below).
+# If you are behind a reverse proxy, you might want to change %h into %{X-Forwarded-For}i
+#
+LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %O" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+
+# Include of directories ignores editors' and dpkg's backup files,
+# see README.Debian for details.
+
+# Include generic snippets of statements
+Include conf.d/
+
+# Include the virtual host configurations:
+Include sites-enabled/

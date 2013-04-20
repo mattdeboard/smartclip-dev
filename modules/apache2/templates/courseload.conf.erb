@@ -1,0 +1,27 @@
+WSGIPythonHome /opt/Envs/api
+
+<VirtualHost *:8001>
+  Alias /media/admin /opt/Envs/api/lib/python2.7/site-packages/django/contrib/admin/static/admin
+  DocumentRoot /courseload/clip/src
+  WSGIScriptAlias /api /courseload/api/src/courseload_api/wsgi.py
+  WSGIDaemonProcess courseload.com processes=1 python-path=/courseload/api/src
+  WSGIProcessGroup courseload.com
+  
+  <Directory /opt/Envs/api/lib/python2.7/site-packages/django/contrib/admin/static/admin>
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory /courseload/api>
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory /courseload/clip>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    LimitRequestBody 20000000
+  </Directory>  
+</VirtualHost>
