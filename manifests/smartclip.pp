@@ -1,6 +1,8 @@
 include postgresql
 
-$apache_port = "8001"
+# Change the port Apache is listening on so we can also run the local dev server
+# inside the Vagrant box.
+$apache_port = "8000"
 $apps_dir = "/opt/apps"
 $bashrc = "/home/vagrant/.bashrc"
 $venv_base = "$venv_home/$venv_name"

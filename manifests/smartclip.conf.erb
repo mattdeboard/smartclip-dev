@@ -2,6 +2,7 @@ WSGIPythonHome <%= @venv_home %>/<%= @venv_name %>
 
 <VirtualHost *:<%= @apache_port %>>
   Alias /media/admin <%= @venv_home %>/<%= @venv_name %>/lib/python2.7/site-packages/django/contrib/admin/static/admin
+  Alias /static <%= @apps_dir %>/smartclip/static
   WSGIScriptAlias / <%= @wsgi_script %>
   WSGIDaemonProcess smartclip processes=1 python-path=<%= @apps_dir %>/smartclip
   WSGIProcessGroup smartclip
