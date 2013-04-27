@@ -1,0 +1,6 @@
+[submodule "submodules/smartclip"]
+	path = submodules/smartclip
+	url = git@github.com:stemchan/smartclip.git
+[submodule "submodules/smartclip-extension"]
+	path = submodules/smartclip-extension
+	url = git@github.com:stemchan/smartclip-extension.git
