@@ -1,0 +1,7 @@
+[program:solr]
+command=java -server -jar start.jar
+directory=<%= solr_dir %>/example
+stdout_logfile=/var/log/solr/out.log
+redirect_stderr=true
+autostart=true
+autorestart=true

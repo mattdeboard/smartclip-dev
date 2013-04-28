@@ -12,6 +12,7 @@ Vagrant::Config.run do |config|
     sc_config.vm.customize ["modifyvm", :id, "--memory", 1024]
     sc_config.vm.forward_port 8000, 8000 # apache
     sc_config.vm.forward_port 22, 2300 # sshd
+    sc_config.vm.forward_port 8983, 9983 # solr
     sc_config.ssh.forward_agent = true
     sc_config.vm.share_folder("smartclip", "/opt/apps",
                               "~/smartclip-dev/submodules")

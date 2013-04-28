@@ -1,4 +1,5 @@
 include postgresql
+include solr
 
 # Change the port Apache is listening on so we can also run the local dev server
 # inside the Vagrant box.
