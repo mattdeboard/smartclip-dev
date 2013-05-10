@@ -35,6 +35,6 @@ if ! psql $PSQL_PARAMS -c "SELECT * FROM pg_catalog.pg_database WHERE datname='$
 fi
 
 # Sync our DB and run migrations. This should be an idempotent operation.
-$PYTHON /opt/apps/smartclip/manage.py syncdb --noinput --settings=smartclip.settings
-$PYTHON /opt/apps/smartclip/manage.py migrate --settings=smartclip.settings
+$PYTHON /opt/apps/smartclip/manage.py syncdb --noinput --settings=smartclip.settings.vagrant
+$PYTHON /opt/apps/smartclip/manage.py migrate --settings=smartclip.settings.vagrant
 

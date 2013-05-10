@@ -15,9 +15,9 @@ Vagrant::Config.run do |config|
     sc_config.vm.forward_port 8983, 9983 # solr
     sc_config.ssh.forward_agent = true
     sc_config.vm.share_folder("smartclip", "/opt/apps",
-                              "~/smartclip-dev/submodules")
+                              "submodules")
     sc_config.vm.share_folder("files", "/etc/puppet/files",
-                              "~/smartclip-dev/files")
+                              "files")
     sc_config.vm.provision :puppet do |puppet|
       puppet.module_path = "modules"
       puppet.manifests_path = "manifests"
