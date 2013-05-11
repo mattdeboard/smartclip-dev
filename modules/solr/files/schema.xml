@@ -157,17 +157,14 @@ that avoids logging every request
     <!-- Just like "text_en_splitting" with addition of HTMLStripCharFilterFactory.
          Used for Smartclip's stored HTML. See
          http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters#solr.HTMLStripCharFilterFactory -->
+
     <fieldType name="text_html" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-        <!-- in this example, we will only use synonyms at query time
-             <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
-        -->
         <!-- Case insensitive stop word removal.
              add enablePositionIncrements=true in both the index and query
-             analyzers to leave a 'gap' for more accurate phrase queries.
-        -->
+             analyzers to leave a 'gap' for more accurate phrase queries. -->
         <filter class="solr.StopFilterFactory"
                 ignoreCase="true"
                 words="lang/stopwords_en.txt"
@@ -191,8 +188,8 @@ that avoids logging every request
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
         <filter class="solr.PorterStemFilterFactory"/>
-      </analyzer>
-    </fieldType>      
+        </analyzer>
+    </fieldType>
 
     <!-- A general text field that has reasonable, generic
          cross-language defaults: it tokenizes with StandardTokenizer,
@@ -444,9 +441,22 @@ that avoids logging every request
   </types>
 
   <fields>
-    <field name="id" type="string" indexed="true" stored="true" required="true" />
-    <field name="html" type="text_html" indexed="true" stored="true" required="true" />
-    <field name="title" type="text_en_splitting" indexed="true" stored="true" required="true" />
+    <field name="id" type="string" indexed="true" stored="true" multiValued="false" required="true"/>
+    <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
+    <dynamicField name="*_s"  type="string"  indexed="true"  stored="true"/>
+    <dynamicField name="*_l"  type="long"   indexed="true"  stored="true"/>
+    <dynamicField name="*_t"  type="text_en"    indexed="true"  stored="true"/>
+    <dynamicField name="*_b"  type="boolean" indexed="true"  stored="true"/>
+    <dynamicField name="*_f"  type="float"  indexed="true"  stored="true"/>
+    <dynamicField name="*_d"  type="double" indexed="true"  stored="true"/>
+    <dynamicField name="*_dt" type="date" indexed="true" stored="true"/>
+    <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false"/>
+    
+    <field name="html" type="text_html" indexed="true" stored="false" required="true" />
+    <field name="title" type="text_en" indexed="true" stored="true" required="true" />
     <field name="source_url" type="text_en" indexed="true" stored="true" omitNorms="true"/>
     <field name="created" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
     <field name="modified" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
@@ -457,5 +467,13 @@ that avoids logging every request
     <field name="_version_" type="long" indexed="true" stored="true"/>    
   </fields>
 
+  <!-- field to use to determine and enforce document uniqueness. -->
   <uniqueKey>id</uniqueKey>
+
+  <!-- field for the QueryParser to use when an explicit fieldname is absent -->
+  <defaultSearchField>text</defaultSearchField>
+
+  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+  <solrQueryParser defaultOperator="AND"/>
+  
 </schema>

@@ -22,7 +22,7 @@ class solr::config inherits solr::params {
     group => 'vagrant',
     mode => 0644,
     source => '/tmp/vagrant-puppet/modules-0/solr/files/schema.xml',
-    notify => Exec['solr::config::update_supervisor']    
+    notify => Exec['solr::config::restart_solr']    
   }
 
   file { '/opt/solr/example/solr/collection1/conf/solrconfig.xml':
@@ -31,11 +31,18 @@ class solr::config inherits solr::params {
     group => 'vagrant',
     mode => 0644,
     source => '/tmp/vagrant-puppet/modules-0/solr/files/solrconfig.xml',
-    notify => Exec['solr::config::update_supervisor']    
+    notify => Exec['solr::config::restart_solr']    
   }
 
   exec { 'solr::config::update_supervisor':
     command     => 'supervisorctl update',
+    user        => root,
+    refreshonly => true,
+    require => Package['supervisor']
+  }
+
+  exec { 'solr::config::restart_solr':
+    command     => 'supervisorctl restart solr',
     user        => root,
     refreshonly => true,
     require => Package['supervisor']
